@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  	<title>Snake Game</title>
+    <style>
+      body {
+        height: 100vh;
+        width: 100vw;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 0;
+      }
+
+      #snakeGrid {
+        background-color: green;
+        width: 90vmin;
+        height: 90vmin;
+        display: grid;
+        grid-template-rows: repeat(20, 1fr);
+        grid-template-columns: repeat(20, 1fr);
+        padding: 10px;
+        border-radius: 10px;
+      }
+
+      .cell-grid {
+        background-color: greenyellow;
+        border: 0.25vmin solid black;
+      }
+
+      .snakeColor {
+        background-color: blue;
+        border: 0.25vmin solid black;
+      }
+
+      .food {
+        background-color: yellow;
+        border: 0.25vmin solid black;
+      }
+
+      .mainTitle {
+        width: 100px;
+        height: 600px;
+        top: 0;
+        left: 0;
+      }
+    </style>
+  </head>
+  <h1 class="mainTitle" >Snake Game</h1> 
+  <body onload="gridSquares()">
+    <script type="text/javascript" src="index1.js"></script>
+    <div id="snakeGrid"></div>
+  </body>
+</html>
+
