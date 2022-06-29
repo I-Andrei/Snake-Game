@@ -1,5 +1,6 @@
 let squares = ""
 let snakePos = 144, foodPos = 154
+let up = 0, down = 0, left = 0, right = 0
 
 function gridSquares() {
   squares = ""
@@ -11,31 +12,40 @@ function gridSquares() {
     else
       squares += "<div class=cell-grid></div>"
   }
+  if (direction == "up")
+    snakePos -= 20
+  if (direction == "down")
+    snakePos += 20
+  if (direction == "left")
+    --snakePos
+  if (direction == "right")
     ++snakePos
-    console.log(snakePos)
   document.getElementById("snakeGrid").innerHTML = squares
 }
 
 window.onload = gridSquares;
-
-setInterval(gridSquares, 1000)
+let direction = ""
 
 document.onkeydown = function (event) {
   switch (event.keyCode) {
-     case 37:
-        console.log("Left key is pressed.");
-        break;
-     case 38:
-        console.log("Up key is pressed.");
-        break;
-     case 39:
-        console.log("Right key is pressed.");
-        break;
-     case 40:
-        console.log("Down key is pressed.");
-        break;
-  }
+    case 37:
+      direction = "left"
+      break;
+    case 38:
+      direction = "up"
+      break;
+    case 39:
+      direction = "right"
+      break;
+    case 40:
+      direction = "down"
+      break;
+    }
 };
+
+setInterval(gridSquares, 500, direction);
+
+
 
 
 
