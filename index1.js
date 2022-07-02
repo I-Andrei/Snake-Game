@@ -1,11 +1,11 @@
 let squares = ""
-foodPos = [ {x: 14, y: 14} ]
+foodPos = {x: 14, y: 14}
 let snakeBody = [
 {x: 14, y: 2}, 
 {x: 14, y: 3}, 
 {x: 14, y: 4} ]
 let eatFood = 0, score = 0, maxScore = 0
-let endgame = 0, line = 1, column = 1, snakeFound = 0
+let line = 1, column = 1, snakeFound = 0
 
 function gridSquares() {
   squares = ""
@@ -18,10 +18,10 @@ function gridSquares() {
   else if (direction == "right")
     snakeBody.push({x: snakeBody[snakeBody.length - 1].x, y: snakeBody[snakeBody.length - 1].y + 1})
   
-  if (snakeBody[snakeBody.length - 1].x == foodPos[0].x && snakeBody[snakeBody.length - 1].y == foodPos[0].y){
+  if (snakeBody[snakeBody.length - 1].x == foodPos.x && snakeBody[snakeBody.length - 1].y == foodPos.y){
     eatFood = 1
-    foodPos[0].x = Math.floor(Math.random() * (20 - 1 + 1) + 1)
-    foodPos[0].y = Math.floor(Math.random() * (20 - 1 + 1) + 1)
+    foodPos.x = Math.floor(Math.random() * 20 + 1)
+    foodPos.y = Math.floor(Math.random() * 20 + 1)
     ++score
     document.getElementById("score").innerHTML = "Score: " + score
   }
@@ -30,7 +30,32 @@ function gridSquares() {
     snakeBody.splice(0, 1)
     eatFood = 0
   }
-  
+  eatFood = 0
+
+  printSnakeGrid()
+
+  document.getElementById("snakeGrid").innerHTML = squares
+
+  if (checkIfGameIsOver() == true){
+    snakeBody = [
+      {x: 14, y: 2}, 
+      {x: 14, y: 3}, 
+      {x: 14, y: 4} ]
+    foodPos = {x: 14, y: 14}
+    direction = ""
+    if(maxScore < score)
+      maxScore = score
+    score = 0
+    document.getElementById("maxScore").innerHTML = "Max Score: " + maxScore
+    document.getElementById("score").innerHTML = "Score"
+    document.getElementById("snakeGrid").innerHTML = "You Lost! Try Again!"
+  }
+
+}
+
+window.onload = gridSquares;
+
+function printSnakeGrid() {
   for (line = 1; line <= 20; ++line)
     for (column = 1; column <= 20; ++column){
       for (let j = 0; j < snakeBody.length; ++j)
@@ -39,38 +64,26 @@ function gridSquares() {
       if (snakeFound == 1){
         squares += '<div class=snakecolor></div>'
         snakeFound = 0
-      } else if (line == foodPos[0].x && column == foodPos[0].y)
+      } else if (line == foodPos.x && column == foodPos.y)
         squares += '<div class=food></div>'
       else
         squares += '<div class=cell-grid></div>'
     }
-  eatFood = 0
-  document.getElementById("snakeGrid").innerHTML = squares
+}
 
+function checkIfGameIsOver() {
+  let endgame = 0
   if ((snakeBody[snakeBody.length - 1].x == 0 && direction == "up") || (snakeBody[snakeBody.length - 1].x == 21 && direction == "down") || (snakeBody[snakeBody.length - 1].y == 0 && direction == "left") || (snakeBody[snakeBody.length - 1].y == 21 && direction == "right"))
     ++endgame
   for (let i = 0; i < snakeBody.length - 3; ++i)
     if (snakeBody[snakeBody.length - 1].x == snakeBody[i].x && snakeBody[snakeBody.length - 1].y == snakeBody[i].y)
       ++endgame
-  
-  if(endgame > 0){
-    snakeBody = [
-      {x: 14, y: 2}, 
-      {x: 14, y: 3}, 
-      {x: 14, y: 4} ]
-    foodPos = [ {x: 14, y: 14} ]
-    direction = ""
-    if(maxScore < score)
-      maxScore = score
-    score = 0
-    document.getElementById("maxScore").innerHTML = "Max Score: " + maxScore
-    document.getElementById("score").innerHTML = "Score"
-    document.getElementById("snakeGrid").innerHTML = "You Lost! Try Again!"
-    endgame = 0
-  }  
+  if(endgame > 0)
+    return true
+  else
+    return false
 }
 
-window.onload = gridSquares;
 let direction = ""
 
 document.onkeydown = function (e) {
